@@ -1,0 +1,71 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.contImg{
+    background: url("../imgs/fondo.jpg");
+    height: 100vh;
+    background-size: cover;
+}
+
+#resultados, #quiniela{
+    background-color: rgb(189, 190, 192);
+}
+
+#resultados >table td{
+    border: #000 2px solid;
+}
+
+#resultados >table td i{
+    line-height: 50px;
+}
+
+#resultados table td{
+    font-size: 22px;
+    font-weight: bold;
+    padding: 3px;
+}
+
+.formQuiniela{
+    background-color: rgb(5, 11, 92);
+}
+
+.formQuiniela form{
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+}
+
+.formQuiniela form>.fila{
+    display: flex;
+    justify-content: space-around;
+}
+
+.acerto{
+    background-color: rgb(155, 250, 126);
+}
+
+#jornadas{
+    width: 128px!important;
+}
+
+#resultadoCorrecto select{
+    width: 128px;
+}
+
+#resultadoCorrecto{
+    background-color: rgb(189, 190, 192);
+}
+
+.displayNone{
+    display: none;
+}
+
+#puntuacion table td{
+    font-size: 20px;
+    font-weight: bold;
+}

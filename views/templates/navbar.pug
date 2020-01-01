@@ -3,11 +3,47 @@ html(lang='es')
     head
         meta(charset='utf-8')
         title Quiniela Mamalona
+        link(rel="stylesheet", href="css/style.css")
+        link(rel="stylesheet", href="css/bootstrap.min.css")
+        script(src='js/jquery-3.3.1.min.js')
+        script(src='js/bootstrap.min.js')
     body
-        div
-            ul
-                li Inicio
-                li Usuario
-                li Inicia Sesion
+      .contImg
+        .container-fluid.p-0
+          nav.navbar.navbar-expand-lg.navbar-light.bg-light
+            a.navbar-brand(href='./') Quiniela Mamalona
+            button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
+              span.navbar-toggler-icon
+            #navbarSupportedContent.collapse.navbar-collapse
+              ul.navbar-nav.mr-auto.w-100.justify-content-end
+                li.nav-item.dropdown
+                  if (sesion == "null")
+                    a#navbarDropdown.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                      | Usuario
+                    .dropdown-menu(aria-labelledby='navbarDropdown')
+                      form.px-4.py-3(method='POST' action='/login')
+                        .form-group
+                          label(for='user') Usuario
+                          input#user.form-control(type='text' placeholder='Usuario' name='user' required='')
+                        .form-group
+                          label(for='pass') Contraseña
+                          input#pass.form-control(type='password' placeholder='Contraseña' name='pass' required='')
+                        button.btn.btn-primary(type='submit') Iniciar Sesión
+                      .dropdown-divider
+                      a.dropdown-item(href='#contraseña') Cambia tu contraseña
+                  else
+                    li.nav-item
+                      a.nav-link= sesion.nombre 
+                li.nav-item
+                  a.nav-link(href='#resultados') Resultados
+                li.nav-item
+                  a.nav-link(href='#quiniela') Quiniela
+                li.nav-item
+                  a.nav-link(href='#puntuacion') Puntuación
+                li.nav-item
+                  a#addResultado.nav-link(href='#resultadoCorrecto') Agregar resultado
+      
+      .container-fluid
+        block resultados
 
-    block contenido
+    script(src='js/js.js')

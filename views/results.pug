@@ -1,0 +1,26 @@
+extends ./templates/navbar.pug
+block resultados
+  #resultados.row.justify-content-center.py-5
+    p.h3.col-12.text-center.mb-4 Resultados
+    #selectJ.col-12.text-center.mb-3.row.justify-content-center
+      select#jornadas.form-control(name='jornadas')
+        - let i = 1;
+        while i < 18
+          option(value=i)= `Jornada ${i++}`
+    .col-12.col-lg-10.text-center
+      table.table.text-center.table-striped.table-hover.table-responsive-md
+        thead.thead-dark
+          tr
+          - let c = 1;
+          while c < 10
+            th 
+              img(src="imgs/equipos/"+jornadas.juego1L+".png", alt="")
+              span vs
+              img(src="imgs/equipos/"+jornadas.juego1V+".png", alt="")
+            - c++;
+              
+              
+
+        tbody.bg-white
+          tr
+            td gana
