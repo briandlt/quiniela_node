@@ -1,70 +1,45 @@
 const express = require('express');
 const pug = require('pug');
-const bodyParser = require('body-parser');
-const User = require("./models/users").User;
-const Jornada = require("./models/jornadas").Jornada;
 const session = require('express-session');
+const connectMongo = require('connect-mongo');
+const connect = require('./config/connection');
+const { secretKey } = require('./config');
+
+//Router
+const appRouter = require('./routes/app');
+
+// init app
 const app = express();
 
-app.use(express.static('public'));
+// Sessions
+const MongoStore = connectMongo(session);
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+// use mongo to store sessions
 app.use(session({
-    secret: "123byuhbsdah12ub",
-    resave: false,
-    saveUninitialized: false
+  secret: secretKey,
+  resave: false,
+  saveUninitialized: false,
+  store: new MongoStore({
+	mongooseConnection: connect,
+	autoRemove: 'disabled',
+	touchAfter: 24 * 3600, // Each 24 hoours update session
+	ttl: 7 * 24 * 60 * 60 // After 7 days expires session
+  })
 }));
 
-const Main = (req,res) => {
-    // Revisamos si hay una sesion activa
-    if(req.session.nombre != undefined){
-        var sesion = req.session;
-    }else{
-        var sesion = "null";
-    }
 
-    Jornada.findOne({jornada: 1}, (err,jornada) => {
-        if(!err){
-            if(jornada){
-                res.render("results", {jornadas:jornada,sesion:sesion})
-            }else{
-                console.log("no se encontraron jornadas");
-            }
-        }else{
-            console.log(err);
-        }  
-        console.log(sesion)
-        console.log(jornada)
-    });
+// Middellwers
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
-}
-
+// View engine
 app.set('view engine', 'pug');
 
-app.get('/', (req, res) =>{
-    Main(req,res)
-});
+// static files
+app.use(express.static('public'));
 
-app.post('/login', (req, res) =>{
-    User.findOne({username:req.body.user, password:req.body.pass}, (err, user) => {
-        if(!err){
-            // SI ME DEVUELVE UN SUAURIO QUIERE DECIR QUE LAS CREDENCIALES SON CORRECTAS
-            if(user){
-                req.session.user_id = user._id;
-                req.session.nombre = user.nombre;
-                req.session.username = user.username;
-                res.render("results", {sesion: req.session});
-            }else{ // DE LO CONTRARIO REDIRECCIONAMOS AL LOGIN Y MANDAMOS UN MENSAJE DE FALLO 
-                res.render("results", {sesion:"null"});
-                console.log("Tus credenciales son incorrectas");
-            }
-        }else{
-            console.log(err);
-        }   
-    });
-});
+// Routes
+app.use('/', appRouter);
 
-app.listen(8080, () =>{
-    console.log("Server on port 8080");
-});
+// init server
+app.listen(8080, () => console.log("Server on port 8080") );

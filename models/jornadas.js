@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-mongoose.connect("mongodb://localhost/quiniela", { useUnifiedTopology: true, useNewUrlParser: true });
 
 let jornadaSchema = new mongoose.Schema({
     jornada: Number,
